@@ -7,12 +7,47 @@
 //
 
 #import "ETAppDelegate.h"
+#import "ETRule.h"
 
 @implementation ETAppDelegate
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
+
+@synthesize solver;
+
+
+- (IBAction) generate: (id)sender
+{
+    
+    
+    NSArray *rules = [_ruleArrayController arrangedObjects];
+    NSDictionary *rules_dict = [self dictionaryForRules:rules];
+    NSString *system = [_initialCondition stringValue];
+    int iters = [_iterationCount intValue];
+    
+    [self setSolver: [[ETSolver alloc] initWithSystem: system andRules: rules_dict]];
+    [solver solveForGenerations: iters];
+    
+    [_lsysview setSystem: [solver lastGeneration]];
+    [_lsysview setRules: rules_dict];
+    
+    [_lsysdisplay setStringValue: [solver lastGeneration]];
+    
+    [_lsysview setNeedsDisplay: YES];
+}
+
+- (NSDictionary*) dictionaryForRules:(NSArray *)rules
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:[rules count]];
+    NSEnumerator *rule_enum = [rules objectEnumerator];
+    ETRule *rule;
+    while (rule = [rule_enum nextObject]) {
+        [dict setObject:rule forKey:rule.character];
+    }
+    return dict;
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
