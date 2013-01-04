@@ -8,6 +8,7 @@
 
 #import "ETAppDelegate.h"
 #import "ETRule.h"
+#import "ETLSysView.h"
 
 @implementation ETAppDelegate
 
@@ -35,6 +36,7 @@
     
     [_lsysdisplay setStringValue: [solver lastGeneration]];
     
+    [_lsysview drawImageForSystem];
     [_lsysview setNeedsDisplay: YES];
 }
 

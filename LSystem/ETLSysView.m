@@ -32,6 +32,7 @@
 @synthesize rules;
 @synthesize drawnSystem;
 @synthesize path;
+@synthesize image;
 
 - (id) initWithFrame:(NSRect)frameRect
 {
@@ -39,28 +40,44 @@
     return self;
 }
 
-
-- (void) drawRect:(NSRect)dirtyRect
+- (NSImage*) drawImageForSystem
 {
-    [[NSColor whiteColor] set];
-    NSRectFill(dirtyRect);
-    
-    [self computePathForSystem];
-    if (path != nil) {
+        
+    if ([self computePathForSystem] != nil) {
+
         NSPoint neworig = [path bounds].origin;
         
         NSAffineTransform *xform = [NSAffineTransform transform];
-        [xform translateXBy:-neworig.x yBy:-neworig.y];
-        
+        [xform translateXBy:-neworig.x yBy:-neworig.y];        
         [path transformUsingAffineTransform:xform];
+
+        image = [[NSImage alloc] initWithSize:path.bounds.size];
+        [image lockFocus];
         
-        NSRect newBounds = NSUnionRect([path bounds], [self frame]);
-        [self setBoundsSize:newBounds.size];
-                
+        [[NSColor whiteColor] set];
+        NSRectFill(path.bounds);
+        
         [[NSColor blueColor] setStroke];
         [path setLineWidth:1];
-        
         [path stroke];
+        
+        [image unlockFocus];
+        
+        return image;
+        
+    } else {
+        return nil;
+    }
+}
+
+
+- (void) drawRect:(NSRect)dirtyRect
+{
+    if (image == nil) {
+        [[NSColor whiteColor] set];
+        NSRectFill(dirtyRect);
+    } else {
+        [image drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
     }
 }
 
@@ -71,9 +88,9 @@
     if (![drawnSystem isEqualToString:system]) {
         path = [NSBezierPath bezierPath];
     
-        NSMutableArray *contextStack = [NSMutableArray arrayWithCapacity:10];
+        NSMutableArray *contextStack = [NSMutableArray arrayWithCapacity:20];
         
-        NSPoint currentPoint = {0.0, 0.0};
+        NSPoint currentPoint = NSZeroPoint;
         NSNumber *angle = [NSNumber numberWithDouble:0];
         
         [path moveToPoint:currentPoint];
@@ -82,44 +99,46 @@
             unichar _character = [system characterAtIndex:i];
             NSString *character = [NSString stringWithCharacters:&_character length:1];
             ETRule *rule = [rules objectForKey:character];
-            int action = [rule.action intValue];
-            
-            ETDrawContext *ctx;
-            
-            NSPoint nextPoint = [self nextPointFromDistance:rule.argument andAngle:angle];
-            
-            switch (action) {
-                case ETNOTHING:
-                    break;
-                case ETDRAW:
-                    [path relativeLineToPoint:nextPoint];
-                    currentPoint.x += nextPoint.x;
-                    currentPoint.y += nextPoint.y;
-                    break;
-                case ETMOVE:
-                    [path relativeMoveToPoint:nextPoint];
-                    currentPoint.x += nextPoint.x;
-                    currentPoint.y += nextPoint.y;
-                    break;
-                case ETROTATE:
-                    angle = [NSNumber numberWithDouble:[angle doubleValue] + [rule.argument doubleValue]];
-                    break;
-                case ETPUSH:
-                    ctx = [ETDrawContext contextWithPoint:currentPoint andAngle:angle andContext:[NSGraphicsContext currentContext]];
-                    [contextStack addObject:ctx];
-                    break;
-                case ETPOP:
-                    ctx = [contextStack lastObject];
-                    [contextStack removeLastObject];
-                    
-                    currentPoint = [ctx currentPoint];
-                    [path moveToPoint:currentPoint];
-                    angle = [ctx angle];
-                    
-                    break;
-                default:
-                    NSLog(@"How did you get here? Action %d", action);
-                    break;
+            if (rule != nil) {
+                int action = [rule.action intValue];
+                
+                ETDrawContext *ctx;
+                
+                NSPoint nextPoint = [self nextPointFromDistance:rule.argument andAngle:angle];
+                
+                switch (action) {
+                    case ETNOTHING:
+                        break;
+                    case ETDRAW:
+                        [path relativeLineToPoint:nextPoint];
+                        currentPoint.x += nextPoint.x;
+                        currentPoint.y += nextPoint.y;
+                        break;
+                    case ETMOVE:
+                        [path relativeMoveToPoint:nextPoint];
+                        currentPoint.x += nextPoint.x;
+                        currentPoint.y += nextPoint.y;
+                        break;
+                    case ETROTATE:
+                        angle = [NSNumber numberWithDouble:[angle doubleValue] + [rule.argument doubleValue]];
+                        break;
+                    case ETPUSH:
+                        ctx = [ETDrawContext contextWithPoint:currentPoint andAngle:angle andContext:[NSGraphicsContext currentContext]];
+                        [contextStack addObject:ctx];
+                        break;
+                    case ETPOP:
+                        ctx = [contextStack lastObject];
+                        [contextStack removeLastObject];
+                        
+                        currentPoint = [ctx currentPoint];
+                        [path moveToPoint:currentPoint];
+                        angle = [ctx angle];
+                        
+                        break;
+                    default:
+                        NSLog(@"How did you get here? Action %d", action);
+                        break;
+                }
             }
         }
     }

@@ -34,7 +34,9 @@ enum {
 @property NSString *drawnSystem;
 @property NSBezierPath *path;
 @property NSDictionary *rules;
+@property NSImage *image;
 
+- (NSImage*) drawImageForSystem;
 - (NSBezierPath*) computePathForSystem;
 - (NSPoint) nextPointFromDistance: (NSNumber*) distance andAngle: (NSNumber*) angle;
 @end
