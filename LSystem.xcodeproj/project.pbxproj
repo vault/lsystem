@@ -18,6 +18,9 @@
 		4C814BD31694FA18003E00B5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C814BB01694FA17003E00B5 /* Cocoa.framework */; };
 		4C814BDB1694FA18003E00B5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4C814BD91694FA18003E00B5 /* InfoPlist.strings */; };
 		4C814BDE1694FA18003E00B5 /* LSystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C814BDD1694FA18003E00B5 /* LSystemTests.m */; };
+		4C814BE91694FA57003E00B5 /* ETSolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C814BE81694FA57003E00B5 /* ETSolver.m */; };
+		4C814BEF169501F4003E00B5 /* ETLSysView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C814BEE169501F4003E00B5 /* ETLSysView.m */; };
+		4C814BF516952D54003E00B5 /* ETRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C814BF416952D54003E00B5 /* ETRule.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,12 @@
 		4C814BDA1694FA18003E00B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4C814BDC1694FA18003E00B5 /* LSystemTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSystemTests.h; sourceTree = "<group>"; };
 		4C814BDD1694FA18003E00B5 /* LSystemTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSystemTests.m; sourceTree = "<group>"; };
+		4C814BE71694FA57003E00B5 /* ETSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETSolver.h; sourceTree = "<group>"; };
+		4C814BE81694FA57003E00B5 /* ETSolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETSolver.m; sourceTree = "<group>"; };
+		4C814BED169501F4003E00B5 /* ETLSysView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETLSysView.h; sourceTree = "<group>"; };
+		4C814BEE169501F4003E00B5 /* ETLSysView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETLSysView.m; sourceTree = "<group>"; };
+		4C814BF316952D54003E00B5 /* ETRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETRule.h; sourceTree = "<group>"; };
+		4C814BF416952D54003E00B5 /* ETRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETRule.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,7 +128,13 @@
 				4C814BC21694FA17003E00B5 /* ETAppDelegate.h */,
 				4C814BC31694FA17003E00B5 /* ETAppDelegate.m */,
 				4C814BC51694FA17003E00B5 /* MainMenu.xib */,
+				4C814BE71694FA57003E00B5 /* ETSolver.h */,
+				4C814BE81694FA57003E00B5 /* ETSolver.m */,
 				4C814BC81694FA17003E00B5 /* LSystem.xcdatamodeld */,
+				4C814BF316952D54003E00B5 /* ETRule.h */,
+				4C814BF416952D54003E00B5 /* ETRule.m */,
+				4C814BED169501F4003E00B5 /* ETLSysView.h */,
+				4C814BEE169501F4003E00B5 /* ETLSysView.m */,
 				4C814BB71694FA17003E00B5 /* Supporting Files */,
 			);
 			path = LSystem;
@@ -268,6 +283,9 @@
 				4C814BBD1694FA17003E00B5 /* main.m in Sources */,
 				4C814BC41694FA17003E00B5 /* ETAppDelegate.m in Sources */,
 				4C814BCA1694FA17003E00B5 /* LSystem.xcdatamodeld in Sources */,
+				4C814BE91694FA57003E00B5 /* ETSolver.m in Sources */,
+				4C814BEF169501F4003E00B5 /* ETLSysView.m in Sources */,
+				4C814BF516952D54003E00B5 /* ETRule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
