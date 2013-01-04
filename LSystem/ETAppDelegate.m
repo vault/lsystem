@@ -44,7 +44,8 @@
     NSEnumerator *rule_enum = [rules objectEnumerator];
     ETRule *rule;
     while (rule = [rule_enum nextObject]) {
-        [dict setObject:rule forKey:rule.character];
+        if (rule.character != nil && [rule.character length] > 0)
+            [dict setObject:rule forKey:rule.character];
     }
     return dict;
 }

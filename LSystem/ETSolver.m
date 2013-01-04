@@ -38,7 +38,8 @@
 - (void) expandLastGeneration
 {
     NSString *lastObject = [generations lastObject];
-    NSMutableString *nextString = [NSMutableString stringWithCapacity:100];
+    long cap = [lastObject length] * [lastObject length];
+    NSMutableString *nextString = [NSMutableString stringWithCapacity:cap];
     NSString *character;
     unichar character_;
     ETRule *rule;
@@ -46,10 +47,13 @@
         character_ = [lastObject characterAtIndex:i];
         character = [NSString stringWithCharacters:&character_ length:1];
         rule = [rules objectForKey:character];
-        [nextString appendString:rule.replacement];
+        if (rule != nil && rule.replacement != nil && [rule.replacement length] > 0)
+            [nextString appendString: rule.replacement];
+        else if (rule != nil && rule.character != nil)
+            [nextString appendString: rule.character];
     }
     [generations addObject:nextString];
-}
+}   
 
 - (NSString*) getGeneration: (int) gen
 {
