@@ -18,7 +18,7 @@ enum {
     ETPOP
 }  ETACTION;
 
-@interface ETDrawContext : NSObject
+@interface ETDrawContext : NSView
 
 @property NSPoint currentPoint;
 @property NSNumber *angle;

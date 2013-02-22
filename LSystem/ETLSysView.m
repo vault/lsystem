@@ -51,7 +51,10 @@
         [xform translateXBy:-neworig.x yBy:-neworig.y];        
         [path transformUsingAffineTransform:xform];
 
-        image = [[NSImage alloc] initWithSize:path.bounds.size];
+        NSSize imageSize = path.bounds.size;
+        imageSize.height += 1;
+        imageSize.width += 1;
+        image = [[NSImage alloc] initWithSize:imageSize];
         [image lockFocus];
         
         [[NSColor whiteColor] set];
@@ -63,6 +66,10 @@
         
         [image unlockFocus];
         
+        //[self setBoundsSize:image.size];
+        //[self setFrameSize:image.size];
+        
+        [self setImage:image];
         return image;
         
     } else {
@@ -71,15 +78,17 @@
 }
 
 
+
 - (void) drawRect:(NSRect)dirtyRect
 {
     if (image == nil) {
         [[NSColor whiteColor] set];
         NSRectFill(dirtyRect);
     } else {
-        [image drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+        [image drawAtPoint:[self bounds].origin fromRect:[self bounds] operation:NSCompositeSourceOver fraction:1.0];
     }
 }
+ 
 
 - (NSBezierPath *) computePathForSystem
 {
